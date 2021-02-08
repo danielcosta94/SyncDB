@@ -14,5 +14,5 @@ const HT_DB_SCHEMA = 'moodleSVHT';
 const DATE_TO_CONVERT_FORMAT = "Y-m-d H:i:s";
 const EVALUATION_TIMES = ['Normal', 'Recurso', 'Especial', 'Extraordinário'];
 
-const SOURCE_ENCODING = 'UTF-8';
-const DESTINY_ENCODING = 'Windows-1252';
+const SOURCE_ENCODE = 'UTF-8';
+const DESTINY_ENCODE = 'Windows-1252';

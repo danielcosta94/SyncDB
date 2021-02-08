@@ -10,7 +10,7 @@
  * @return false|string|null String encoded to the right collation
  */
 function encodePhpStringToSqlObject(?string $str = null) {
-    return $str != null ? iconv(SOURCE_ENCODING, DESTINY_ENCODING, $str) : null;
+    return $str != null ? iconv(SOURCE_ENCODE, DESTINY_ENCODE, $str) : null;
 }
 
 /**
