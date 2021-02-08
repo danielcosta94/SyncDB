@@ -91,6 +91,9 @@ SQL
             } finally {
                 sqlsrv_close($ht_connection);
             }
+
+            /* free result set */
+            $moodle_query->free();
         } else {
             echo "Connection could not be established:" . sqlsrv_errors() . PHP_EOL;
         }
