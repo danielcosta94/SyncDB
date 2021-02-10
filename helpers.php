@@ -36,20 +36,6 @@ function sanitizeDataQueried(?array &$row = null)
 }
 
 /**
- * Truncates all tables in HT database
- *
- * @param $ht_connection HT database connection previously opened
- */
-function truncateTables($ht_connection)
-{
-    $sql = "TRUNCATE TABLE TB_Avaliacao";
-    sqlsrv_query($ht_connection, $sql);
-
-    $sql = "TRUNCATE TABLE TB_Enunciado";
-    sqlsrv_query($ht_connection, $sql);
-}
-
-/**
  * Parse absolute integer date since (1970-01-01 00:00:00) to the pretended format
  *
  * @param int $dateInteger        The input datetime in integer format
@@ -60,6 +46,18 @@ function truncateTables($ht_connection)
 function parseDateIntegerToOtherFormat(int $dateInteger = 0, $destiny_format = DATE_TO_CONVERT_FORMAT)
 {
     return date($destiny_format, $dateInteger);
+}
+
+/**
+ *
+ *
+ * @param string $datetime
+ *
+ * @return false|int
+ */
+function parseDateTimeToInteger(string $datetime)
+{
+    return strtotime($datetime);
 }
 
 /**

@@ -16,3 +16,11 @@ const EVALUATION_TIMES = ['Normal', 'Recurso', 'Especial', 'Extraordinário'];
 
 const SOURCE_ENCODE = 'UTF-8';
 const DESTINY_ENCODE = 'Windows-1252';
+
+/**
+ * Variable that sets the datetime or time difference of the courses to query
+ *
+ * For exact date use format "Y-m-d": eg. '2020-01-01'
+ * For time interval use format "- number_of_unit time_unit" eg. '-1 month'
+ */
+const START_DATETIME_OR_INTERVAL_FOR_COURSES_STARTED = '2020-01-01';

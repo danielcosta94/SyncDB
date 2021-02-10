@@ -38,16 +38,24 @@ function insertData($ht_connection, $moodle_query): array
             $params = [$row["email"], $row["course_code"], $ref_action, $row["module"], $row["param_evaluation"], $row['time_modified_evaluation'], $row["rawgrade"]];
 
             $stmt = sqlsrv_query($ht_connection, $sql, $params);
-            $stmt ? $inserted_rows++ : $not_inserted_rows++;
-            sqlsrv_free_stmt($stmt);
+            if ($stmt) {
+                $inserted_rows++;
+                sqlsrv_free_stmt($stmt);
+            } else {
+                $not_inserted_rows++;
+            }
 
             // Insert new record into "TB_Enunciado" table"
             $sql = "INSERT INTO TB_Enunciado (pergunta, resposta, codigo_curso, ref_accao, epoca, modulo, data) VALUES (?, ?, ?, ?, ?, ?, ?)";
             $params = [$row["questiontext"], $row["answer"], $row["course_code"], $ref_action, getEvaluationTime($row["itemname"]), $row["module"], $row['time_modified_test']];
 
             $stmt = sqlsrv_query($ht_connection, $sql, $params);
-            $stmt ? $inserted_rows++ : $not_inserted_rows++;
-            sqlsrv_free_stmt($stmt);
+            if ($stmt) {
+                $inserted_rows++;
+                sqlsrv_free_stmt($stmt);
+            } else {
+                $not_inserted_rows++;
+            }
         }
     }
 
@@ -62,6 +70,8 @@ if ($moodle_connection) {
     $ht_connection_info = ["Database" => HT_DB_SCHEMA];
     $ht_connection = sqlsrv_connect($ht_server_name, $ht_connection_info);
 
+    $courses_start_time = parseDateTimeToInteger(date_format(date_create(START_DATETIME_OR_INTERVAL_FOR_COURSES_STARTED), 'Y-m-d'));
+
     if ($ht_connection) {
         $moodle_query = $moodle_connection->query(<<<SQL
 SELECT u.email, c.shortname AS course_code, c.fullname, cs.name AS module, gi.itemmodule AS param_evaluation, gg.timemodified AS time_modified_evaluation, gg.rawgrade, q.questiontext, qa.answer, gi.itemname, gi.timemodified AS time_modified_test
@@ -73,14 +83,12 @@ INNER JOIN course_sections cs ON cs.course = c.id
 INNER JOIN questionnaire_response_text qrt ON cs.course = c.id
 INNER JOIN question q ON qrt.question_id = q.id
 INNER JOIN question_answers qa ON qrt.response_id = qa.id
+WHERE gi.timecreated > $courses_start_time;
 SQL
             , MYSQLI_USE_RESULT);
 
         if ($moodle_query) {
             try {
-                // Clear HT database tables
-                truncateTables($ht_connection);
-
                 // Insert records into HT database;
                 $results = insertData($ht_connection, $moodle_query);
 
