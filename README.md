@@ -12,9 +12,10 @@ Sync DB is a script made to copy the pretended source data from **Moodle DB** to
 - Copy and deploy this microservice in the desired location
 - Copy and rename template file configuration`config.php.example` to `config.php` and set the all the needed configuration variables
 - Go to `php.ini` search configuration `max_execution_time` and set this variable to value that **allows to run the script until the end** or set to `0` to be **unlimited**
-- Add a new entry to crontab list along with the adjusted schedule time execution
+- Add a new entry to crontab list along with the adjusted schedule time execution (**Please adjust this time according to the estimated duration of the script!!!**)
 
 **Example to run every 30 minutes**
+
   ```sh
 */30 * * * * php <path_to_project>/sync_db.php
 ```

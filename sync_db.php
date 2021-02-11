@@ -47,7 +47,7 @@ function insertData($ht_connection, $moodle_query): array
 
             // Insert new record into "TB_Enunciado" table"
             $sql = "INSERT INTO TB_Enunciado (pergunta, resposta, codigo_curso, ref_accao, epoca, modulo, data) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            $params = [$row["questiontext"], $row["answer"], $row["course_code"], $ref_action, getEvaluationTime($row["itemname"]), $row["module"], $row['time_modified_test']];
+            $params = [null, null, $row["course_code"], $ref_action, getEvaluationTime($row["itemname"]), $row["module"], $row['time_modified_test']];
 
             $stmt = sqlsrv_query($ht_connection, $sql, $params);
             if ($stmt) {
@@ -74,15 +74,12 @@ if ($moodle_connection) {
 
     if ($ht_connection) {
         $moodle_query = $moodle_connection->query(<<<SQL
-SELECT u.email, c.shortname AS course_code, c.fullname, cs.name AS module, gi.itemmodule AS param_evaluation, gg.timemodified AS time_modified_evaluation, gg.rawgrade, q.questiontext, qa.answer, gi.itemname, gi.timemodified AS time_modified_test
+SELECT u.email, c.shortname AS course_code, c.fullname, cs.name AS module, gi.itemmodule AS param_evaluation, gg.timemodified AS time_modified_evaluation, gg.rawgrade, gi.itemname, gi.timemodified AS time_modified_test
 FROM grade_grades gg
 INNER JOIN grade_items gi ON gg.itemid = gi.id
 INNER JOIN course c ON c.id = gi.courseid
 INNER JOIN user u ON u.id = gg.userid
 INNER JOIN course_sections cs ON cs.course = c.id
-INNER JOIN questionnaire_response_text qrt ON cs.course = c.id
-INNER JOIN question q ON qrt.question_id = q.id
-INNER JOIN question_answers qa ON qrt.response_id = qa.id
 WHERE gi.timecreated > $courses_start_time;
 SQL
             , MYSQLI_USE_RESULT);

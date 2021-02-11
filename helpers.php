@@ -28,10 +28,12 @@ function sanitizeDataQueried(?array &$row = null)
         $row['param_evaluation'] = $row['param_evaluation'] != null ? filter_var($row['param_evaluation'], FILTER_SANITIZE_STRING) : null;
         $row['time_modified_evaluation'] = $row['time_modified_evaluation'] != null ? filter_var($row['time_modified_evaluation'], FILTER_SANITIZE_NUMBER_INT) : null;
         $row['rawgrade'] = $row['rawgrade'] != null ? filter_var($row['rawgrade'], FILTER_SANITIZE_STRING) : null;
-        $row['questiontext'] = $row['questiontext'] != null ? str_replace(["\t", "\n", "\r"], " ", html_entity_decode(filter_var($row['questiontext'], FILTER_SANITIZE_STRING), FILTER_SANITIZE_STRING)) : null;
-        $row['answer'] = $row['answer'] != null ? filter_var($row['answer'], FILTER_SANITIZE_STRING) : null;
         $row['itemname'] = $row['itemname'] != null ? filter_var($row['itemname'], FILTER_SANITIZE_STRING) : null;
         $row['time_modified_test'] = $row['time_modified_test'] != null ? filter_var($row['time_modified_test'], FILTER_SANITIZE_NUMBER_INT) : null;
+
+        //  Uncomment these lines below when these information is fetched correctly
+        //  $row['questiontext'] = $row['questiontext'] != null ? str_replace(["\t", "\n", "\r"], " ", html_entity_decode(filter_var($row['questiontext'], FILTER_SANITIZE_STRING), FILTER_SANITIZE_STRING)) : null;
+        //  $row['answer'] = $row['answer'] != null ? filter_var($row['answer'], FILTER_SANITIZE_STRING) : null;
     }
 }
 
@@ -145,6 +147,8 @@ function encodeRowStringsToSqlObject(array &$row)
 {
     $row['course_code'] = encodePhpStringToSqlObject($row['course_code']);
     $row['module'] = encodePhpStringToSqlObject($row['module']);
-    $row['questiontext'] = encodePhpStringToSqlObject($row['questiontext']);
-    $row['answer'] = encodePhpStringToSqlObject($row['answer']);
+
+    //  Uncomment these lines below when these information is fetched correctly
+    //  $row['questiontext'] = encodePhpStringToSqlObject($row['questiontext']);
+    //  $row['answer'] = encodePhpStringToSqlObject($row['answer']);
 }
